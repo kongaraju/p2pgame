@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>P2P Game Demo</title>
+
+<meta http-equiv="X-UA-Compatible" content="chrome=1"/>
+
+
+
+<link rel="canonical" href="{{ room_link }}"/>
+<link rel="stylesheet" href="css/main.css" />
+<link rel="stylesheet" href="css/styles.css" />
+<script type="text/javascript" src="/_ah/channel/jsapi"></script>
+<script src="js/movement.js"></script>
+<script src="js/mk.js"></script>
+
+<script src="/js/main.js"></script>
+<!-- Load the polyfill to switch-hit between Chrome and Firefox -->
+<script src="/js/adapter.js"></script>
+
+</head>
+<body> 
+	<div class="dataContainer">
+		<div class="dataItem">
+			<div class="fb-like hspace" data-href="https://ptpgamedemo.appspot.com/" data-width="50" data-layout="box_count" data-show-faces="true" data-send="false"></div>
+			<div class="g-plusone hspace" data-size="tall"></div>
+			<div class="tweet-button hspace"><a href="https://twitter.com/share" class="twitter-share-button" data-related="jasoncosta" data-lang="en" data-size="large" data-count="vertical" data-url="https://ptpgamedemo.appspot.com">Tweet</a></div>
+		</div>
+		<div class="dataItem">
+			<h3 class="dataHead"> &raquo;  &nbsp; Who is this?</h3>
+			<div class="dataContent" style="text-align: center;line-height: 30px;">
+				<p>
+				<span class="block"> I am <span class="quote"><a href="https://plus.google.com/u/0/115310382888220784299/" target="_blank"> Raju Konga </a></span> </span>
+				<span class="block"><span class="quote"> Development Engineer</span> at <span class="quote"><a href="http://www.antkorp.in/" target="_blank"> antkorp</a></span></span>
+				</p>
+				<p>
+					<a href="https://www.facebook.com/raju.konga.9" target="_blank" class="hspace social_link">
+						 <span class="icon-facebook2"></span>
+					</a>
+					<a href="https://plus.google.com/u/0/115310382888220784299" target="_blank" class="hspace social_link">
+						<span class="icon-google-plus"></span>
+					</a>
+					<a href="https://twitter.com/kongaraju" target="_blank" class="hspace social_link">
+						<span class="icon-twitter2"></span>
+					</a>
+					<a href="in.linkedin.com/pub/konga-raju/45/353/355/" target="_blank" class="hspace social_link">
+						<span class="icon-linkedin"></span>
+					</a>
+				</p>
+			</div>
+		</div>
+		<div class="dataItem">
+			<h3 class="dataHead"> &raquo;  &nbsp; What is This?</h3>
+			<div class="dataContent">
+				<p><span class="quote"> Simple Multi-Player Game built using HTML5 canvas and  Web RTC.</span> This demostrates how we can build real time games using Web RTC Data Channels. Demo is completly built using HTML5. Each action updated using Peer to Peer communication only.</p>
+				
+			</div>
+		</div>
+		<div class="dataItem">
+			<h3 class="dataHead"> &raquo; &nbsp; How to play?</h3>
+			<div class="dataContent">
+			<ul>
+				<li>Use arrows to <span class="quote">move</span></li>
+				<li>Press <span class="quote">"A"</span> for <span class="quote">high-punch</span></li>
+				<li>Press <span class="quote">"S"</span> for <span class="quote">low-punch</span></li>
+				<li>Press <span class="quote">"D"</span> for <span class="quote">low-kick</span></li>
+				<li>Press <span class="quote">"F"</span> for <span class="quote">high-kick</span></li>
+				<li>Press <span class="quote">"Shift"</span> for <span class="quote">block</span></li>
+			</ul>
+			</div>
+		</div>
+	</div>
+	
+	
+	
+	
+	<table class="gameTable">
+    <thead>
+        <th>
+           <!-- Arena-->
+        </th>
+       <!-- <th>
+            Webcam
+       </th>-->
+    </thead>
+    <tbody>
+    	
+        <tr>    
+            <td>
+                <div id="parent">
+                    <div id="utils">
+                        <div id="player1Name" class="playerName">Player 1</div>
+                        <div id="player1LifeBar" class="lifebar"><div class="life" id="player1Life"></div></div> 
+                        <div id="player2Name" class="playerName">Player 2</div>
+                        <div id="player2LifeBar" class="lifebar"><div class="life" id="player2Life"></div></div> 
+                    </div>
+                    <div id="arena">
+                    </div> 
+                    <div id="loading">
+                        <span class="loadingLabel">Loading...</span> 
+                    </div>
+                    <div id="gameEnd">
+            			<span id="gameOverLabel">
+                			<span>Game over</span>
+                			<br>Refresh to play again
+            			</span>
+        			</div>
+                </div>
+            </td>
+           <!-- <td id="webcam-parent">
+           </td>-->
+        </tr>
+        <tr>
+    		<td>
+    			<div id="remote">
+			      <video id="remoteVideo" autoplay="autoplay" class="vidFrame posLeft">
+			      </video>
+			      <div id="mini" class="vidFrame posRight">
+			        <video id="miniVideo" autoplay="autoplay" muted="true"/>
+			      </div>
+			    </div>
+    		</td>
+    	</tr>
+       
+    </tbody>
+    </table>
+   
+   
+   <div id="container" ondblclick="enterFullScreen()">
+  <div id="card">
+    <div id="local">
+      <video id="localVideo" autoplay="autoplay" muted="true"/>
+    </div>
+    
+  </div>
+</div>
+<div id="dataContainer" style="display:none;">
+  <div id="convWindow"></div>
+  <div id="inputHolder">
+    <textarea id="sendMsg" cols=10 rows=5 ></textarea>
+  </div>
+
+</div>
+
+
+
+<footer id="footer">
+</footer>
+<div id="infoDiv"></div>
+    <script>
+        function buildGame() {
+
+            function $(id) {
+                return document.getElementById(id);
+            }
+
+            function setLife(container, life) {
+                container.style.width = life + '%';
+            }
+
+            function renderWebcam() {
+                var container = $('webcam-parent');
+                container.appendChild($('movementjs-main-canvas'));
+            }
+
+            document.onkeydown = function (e) {
+                if (e.keyCode === 32) {
+                    window.location.reload();
+                }
+            };
+
+            (function () {
+                var startGame = function () {
+                        $('loading').style.visibility = 'hidden';
+                        $('arena').style.visibility = 'visible';
+                        $('utils').style.visibility = 'visible';
+                    };
+                    
+                var options = {
+                    arena: {
+                        container: document.getElementById('arena'),
+                        arena: mk.arenas.types.TOWER
+                    },
+                    fighters: [{ name: 'Subzero' }, { name: 'Kano' }],
+                    callbacks: {
+                        attack: function (f, o, l) {
+                            if (o.getName() === 'kano') {
+                                setLife($('player2Life'), o.getLife());
+                            } else {
+                                setLife($('player1Life'), o.getLife());
+                            }
+                        },
+                        'game-end': function () {
+                        	 $('loading').style.visibility = 'hidden';
+                        $('arena').style.visibility = 'hidden';
+                        $('utils').style.visibility = 'hidden';
+                   			$('gameEnd').style.visibility = 'visible'; 
+                		}
+                    },
+                    gameType: 'network',
+                    transport: Peer,
+                    isHost : Peer.starter,
+                    gameName: "P2P Game",
+                };
+                mk.start(options).ready(function () {
+                    startGame();
+                    renderWebcam();
+                });
+            }());
+
+        };
+    </script>
+    
+<script type="text/javascript">
+  var channelToken = '{{ token }}';
+  var me = '{{ me }}';
+  var roomKey = '{{ room_key }}';
+  var roomLink = '{{ room_link }}';
+  var initiator = {{ initiator }};
+  var pcConfig = {{ pc_config|safe }};
+  var pcConstraints = {{ pc_constraints|safe }};
+  var offerConstraints = {{ offer_constraints | safe }};
+  var mediaConstraints = {{ media_constraints | safe }};
+  var turnUrl = '{{ turn_url }}';
+  var stereo = {{ stereo }};
+
+  setTimeout(initialize, 1);
+  
+  Peer.onDataChannelOpened=buildGame;
+  console.log("game build called");
+  
+</script>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=609820245699095";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-44242079-1', 'ptpgamedemo.appspot.com');
+  ga('send', 'pageview');
+
+</script>
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+</body>
+</html>
