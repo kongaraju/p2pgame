@@ -240,10 +240,10 @@ a.social_link{
 /*
  * Sprites
  */
-.icon-google-plus,.icon-google-plus2,.icon-facebook,.icon-facebook2,.icon-facebook3,.icon-twitter,.icon-twitter2,.icon-twitter3,.icon-linkedin {
+.icon-google-plus,.icon-google-plus2,.icon-facebook,.icon-facebook2,.icon-facebook3,.icon-twitter,.icon-twitter2,.icon-twitter3,.icon-github,.icon-linkedin {
 	display: inline-block;
-	width: 32px;
-	height: 32px;
+	width: 24px;
+	height: 24px;
 	background-image: url("../images/social/sprites.png");
 	background-repeat: no-repeat;
 }
@@ -251,26 +251,29 @@ a.social_link{
 	background-position: 0 0;
 }
 .icon-google-plus2 {
-	background-position: 0 -64px;
+	background-position: 0 -48px;
 }
 .icon-facebook {
-	background-position: 0 -128px;
+	background-position: 0 -96px;
 }
 .icon-facebook2 {
-	background-position: 0 -192px;
+	background-position: 0 -144px;
 }
 .icon-facebook3 {
-	background-position: 0 -256px;
+	background-position: 0 -192px;
 }
 .icon-twitter {
-	background-position: 0 -320px;
+	background-position: 0 -240px;
 }
 .icon-twitter2 {
-	background-position: 0 -384px;
+	background-position: 0 -288px;
 }
 .icon-twitter3 {
-	background-position: 0 -448px;
+	background-position: 0 -336px;
+}
+.icon-github {
+	background-position: 0 -384px;
 }
 .icon-linkedin {
-	background-position: 0 -512px;
+	background-position: 0 -432px;
 }
