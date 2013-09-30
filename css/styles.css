@@ -244,7 +244,7 @@ a.social_link{
 	display: inline-block;
 	width: 24px;
 	height: 24px;
-	background-image: url(sprites.png);
+	background-image: url(../images/social/sprites.png);
 	background-repeat: no-repeat;
 }
 .icon-google-plus {
